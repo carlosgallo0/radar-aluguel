@@ -1,0 +1,10 @@
+{
+  "name": "Radar de Aluguel",
+  "short_name": "Radar",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f5f0",
+  "theme_color": "#0f6b54",
+  "lang": "pt-BR",
+  "icons": [{"src": "icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}
