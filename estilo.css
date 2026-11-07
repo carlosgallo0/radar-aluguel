@@ -208,7 +208,7 @@ h1, h2, h3, p { margin: 0; }
   white-space: nowrap;
 }
 
-.pilula.muito { background: var(--acento); color: #fff; }
+.pilula.muito { background: var(--acento); color: var(--acento-texto); }
 
 .ponto-casa {
   width: 26px;
