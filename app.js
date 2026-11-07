@@ -22,7 +22,7 @@ const ICONE = {
   whats: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.300-4.200A8 8 0 1 1 8.300 19z"/></svg>',
 };
 
-const e = {
+const e = window.radar = { // window.radar: para inspecionar no console
   codigo: null, nome: "", params: null, marcas: new Map(), dados: null, vistoAnterior: null, gerado: null,
   aba: "radar", filtro: "boas", ordem: "melhor", selecionados: new Set(), porId: new Map(), editando: false,
   ficha: null, mapa: null, ativo: null,
@@ -385,11 +385,12 @@ function htmlFicha(id) {
   const m = e.marcas.get(id);
   const noAr = e.porId.has(id);
   const fotos = (im.fotos ?? (im.foto ? [im.foto] : []));
+  // custo completo = o portal deu o total: o que falta na soma é condomínio ou IPTU que o imóvel não tem
   const custos = [["Aluguel", im.aluguel], ["Condomínio", im.condominio], ["IPTU", im.iptu]];
-  const linhasCusto = custos.map(([n, v]) => `<span>${n}</span><span class="v">${v ? brl(v) : "não informado"}</span>`).join("");
+  const linhasCusto = custos.map(([n, v]) => `<span>${n}</span><span class="v">${v ? brl(v) : im.completo ? "não tem" : "não informado"}</span>`).join("");
   const andar = im.andar_min != null ? `${im.andar_min}º a ${im.andar_max}º` : null;
   const fatos = [
-    ["Quartos", im.quartos], ["Suítes", im.suites], ["Banheiros", im.banheiros], ["Vagas", im.vagas],
+    ["Quartos", im.quartos], ["Suítes", im.suites || null], ["Banheiros", im.banheiros], ["Vagas", im.vagas],
     ["Área", im.area ? `${Math.round(im.area)} m²` : null], ["Andar", andar],
     ["Mobília", { sim: "Mobiliado", semi: "Semi", nao: "Sem móveis" }[im.mobiliado]],
     ["Pet", im.pet === 1 ? "Aceita" : null],
@@ -670,7 +671,7 @@ function atualizarMapa() {
   m.setFilter("bairros-linha", filtro);
   for (const p of e.pilulas ?? []) {
     const nivel = nivelDe(p.nome);
-    p.d.className = `pilula ${nivel}`;
+    p.d.classList.toggle("muito", nivel === "muito"); // só esta classe: o MapLibre usa as dele para posicionar
     if (nivel === "fora") p.marcador.remove(); else p.marcador.addTo(m);
   }
   const pt = ponto();
